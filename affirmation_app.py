@@ -5,13 +5,23 @@ from email.mime.text import MIMEText
 import logging
 import requests
 
-# Set up automatic error logging to a local text file
-log_file = "affirmation_debug.log"
-logging.basicConfig(
-    filename=log_file,
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s"
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger_file_handler = logging.handlers.RotatingFileHandler(
+    "status.log",
+    maxBytes=1024 * 1024,
+    backupCount=1,
+    encoding="utf8",
 )
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger_file_handler.setFormatter(formatter)
+logger.addHandler(logger_file_handler)
+
+try:
+    DKLOTZ96182_GMAIL_APP_PW = os.environ["DKLOTZ96182_GMAIL_APP_PW"]
+except KeyError:
+    DKLOTZ96182_GMAIL_APP_PW = "Token not available!"
 
 def send_sms_via_email(number, carrier_gateway, message_body):
     # Combine the number and gateway domain
@@ -19,6 +29,7 @@ def send_sms_via_email(number, carrier_gateway, message_body):
     
     # Set up email server credentials
     sender_email = "dklotz96182@gmail.com"
+    app_password = DKLOTZ96182_GMAIL_APP_PW
     app_password = "hwnd mtma gpja btzw" # Generated via Google Account security
     
     # Configure the message
@@ -64,10 +75,10 @@ def fetch_affirmation():
         
     except requests.exceptions.RequestException as e:
         # Automatically log the error to the local text file for background debugging
-        logging.error(f"API Request failed: {e}")
+        logger.info(f"API Request failed: {e}")
         return None
     except ValueError as e:
-        logging.error(f"Failed to parse JSON response: {e}")
+        logger.info(f"Failed to parse JSON response: {e}")
         return None
 
 if __name__ == "__main__":
@@ -78,5 +89,6 @@ if __name__ == "__main__":
         msg = f"Todays Affirmation: {affirmation}"
         print(msg)
         send_sms_via_email(6097602333, "vtext.com", msg)
+        logger.info(msg)
     else:
-        print(f"\n[Error] Could not fetch affirmation. Details logged to {log_file}")
+        logger.info(f"\n[Error] Could not fetch affirmation.")
