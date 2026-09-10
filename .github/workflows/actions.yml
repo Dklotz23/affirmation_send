@@ -24,7 +24,7 @@ jobs:
           
       - name: execute py script # run affirmation_app.py
         env:
-          SOME_SECRET: ${{ secrets.DKLOTZ96182_GMAIL_APP_PW }}
+          DKLOTZ96182_GMAIL_APP_PW: ${{ secrets.DKLOTZ96182_GMAIL_APP_PW }}
         run: python affirmation_app.py
           
       - name: commit files
