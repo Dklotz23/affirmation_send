@@ -29,7 +29,7 @@ def send_sms_via_email(number, carrier_gateway, message_body):
     
     # Set up email server credentials
     sender_email = "dklotz96182@gmail.com"
-    app_password = DKLOTZ96182_GMAIL_APP_PW
+    # app_password = DKLOTZ96182_GMAIL_APP_PW
     app_password = "hwnd mtma gpja btzw" # Generated via Google Account security
     
     # Configure the message
