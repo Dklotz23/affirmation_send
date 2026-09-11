@@ -1,3 +1,5 @@
+from asyncio.log import logger
+from logging.handlers import RotatingFileHandler
 import os
 import sys
 import smtplib
@@ -29,8 +31,7 @@ def send_sms_via_email(number, carrier_gateway, message_body):
     
     # Set up email server credentials
     sender_email = "dklotz96182@gmail.com"
-    # app_password = DKLOTZ96182_GMAIL_APP_PW
-    app_password = "hwnd mtma gpja btzw" # Generated via Google Account security
+    app_password = DKLOTZ96182_GMAIL_APP_PW
     
     # Configure the message
     msg = MIMEText(message_body)
@@ -39,7 +40,7 @@ def send_sms_via_email(number, carrier_gateway, message_body):
     
     try:
         # Connect to Gmail's SMTP server
-        server = smtplib.SMTP("://gmail.com", 587)
+        server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls() # Secure the connection
         server.login(sender_email, app_password)
         
@@ -88,6 +89,10 @@ if __name__ == "__main__":
     if affirmation:
         msg = f"Todays Affirmation: {affirmation}"
         print(msg)
+        send_sms_via_email(6097602333, "vtext.com", msg)
+        logger.info(msg)
+    else:
+        logger.info(f"\n[Error] Could not fetch affirmation.")
         send_sms_via_email(6097602333, "vtext.com", msg)
         logger.info(msg)
     else:
