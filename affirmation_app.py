@@ -95,5 +95,3 @@ if __name__ == "__main__":
         logger.info(f"\n[Error] Could not fetch affirmation.")
         send_sms_via_email(6097602333, "vtext.com", msg)
         logger.info(msg)
-    else:
-        logger.info(f"\n[Error] Could not fetch affirmation.")
