@@ -3,8 +3,7 @@ name: run affirmation_app.py
 on:
   workflow_dispatch: 
   schedule:
-    #- cron: '0 8 * * *'
-    - cron: '0 17 * * *'
+    - cron: '30 13 * * 1'
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 import logging
 import requests
 
+TEXT_RECIPIENTS = [6097602333, 7328294269]
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -24,6 +25,7 @@ try:
     DKLOTZ96182_GMAIL_APP_PW = os.environ["DKLOTZ96182_GMAIL_APP_PW"]
 except KeyError:
     DKLOTZ96182_GMAIL_APP_PW = "Token not available!"
+
 
 def send_sms_via_email(number, carrier_gateway, message_body):
     # Combine the number and gateway domain
@@ -51,8 +53,6 @@ def send_sms_via_email(number, carrier_gateway, message_body):
     except Exception as e:
         print(f"Failed to send text: {e}")
 
-# Example usage: Sending a text to a Verizon phone number
-#send_sms_via_email("1234567890", "vtext.com", "Hello! This is a free automated text.")
 
 def fetch_affirmation():
     """
@@ -87,11 +87,11 @@ if __name__ == "__main__":
     affirmation = fetch_affirmation()
     
     if affirmation:
-        msg = f"Todays Affirmation: {affirmation}"
+        msg = f"Just Remember: {affirmation}"
         print(msg)
-        send_sms_via_email(6097602333, "vtext.com", msg)
+        for number in TEXT_RECIPIENTS:
+            send_sms_via_email(number, "vtext.com", msg)
         logger.info(msg)
     else:
         logger.info(f"\n[Error] Could not fetch affirmation.")
-        send_sms_via_email(6097602333, "vtext.com", msg)
-        logger.info(msg)
+
